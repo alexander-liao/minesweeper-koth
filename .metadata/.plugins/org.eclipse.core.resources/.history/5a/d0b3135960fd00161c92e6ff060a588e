@@ -104,7 +104,6 @@ public class Game {
 			}
 			for (MineBot bot : dead) {
 				bots.remove(bot);
-				board[bot.getX()][bot.getY()] = 0;
 			}
 			defusers.clear();
 			bombers.clear();

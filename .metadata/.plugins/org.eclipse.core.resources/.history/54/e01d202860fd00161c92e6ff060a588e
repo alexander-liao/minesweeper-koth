@@ -4,7 +4,8 @@ import bot.MineBot;
 
 public class TestBot extends MineBot {
 	public int changeMines(int[][] field) {
-		return 2;
+		throw new RuntimeException();
+		// return 2;
 	}
 
 	public int[] proceed(int[][] field) {
