@@ -43,8 +43,8 @@ public class Game {
 				try {
 					int[] move = bot.proceed(clone(field));
 					if (move[0] == 4) {
-						int dx = move[1] == 0 ? -1 : move[1] == 2 ? 1 : 0;
-						int dy = move[1] == 1 ? -1 : move[1] == 3 ? 1 : 0;
+						int dx = xFromMove(move[1]);
+						int dy = yFromMove(move[1]);
 						if (get(board, bot.getX() + dx, bot.getY() + dy) == 1) {
 							set(board, bot.getX() + dx, bot.getY() + dy, -1);
 						}
@@ -60,8 +60,8 @@ public class Game {
 				try {
 					int[] move = bot.proceed(clone(field));
 					if (move[0] == 2 || move[0] == 3) {
-						int dx = move[1] == 0 ? -1 : move[1] == 2 ? 1 : 0;
-						int dy = move[1] == 1 ? -1 : move[1] == 3 ? 1 : 0;
+						int dx = xFromMove(move[1]);
+						int dy = yFromMove(move[1]);
 						if (move[0] == 2) {
 							if (get(board, bot.getX(), bot.getY()) == 0) {
 								set(board, bot.getX(), bot.getY(), 1);
@@ -84,8 +84,8 @@ public class Game {
 				try {
 					int[] move = bot.proceed(clone(field));
 					if (move[0] == 1) {
-						int dx = move[1] == 0 ? -1 : move[1] == 2 ? 1 : 0;
-						int dy = move[1] == 1 ? -1 : move[1] == 3 ? 1 : 0;
+						int dx = xFromMove(move[1]);
+						int dy = yFromMove(move[1]);
 						move(bot, bot.getX() + dx, bot.getY() + dy);
 					}
 				} catch (Throwable t) {
@@ -155,6 +155,14 @@ public class Game {
 		if (x >= 0 && x < board.length && y >= 0 && y < board[x].length) {
 			board[x][y] = n;
 		}
+	}
+
+	public static int xFromMove(int move) {
+		return new int[] { -1, 0, 1, 1, 1, 0, -1, -1 }[move];
+	}
+
+	public static int yFromMove(int move) {
+		return new int[] { -1, -1, -1, 0, 1, 1, 1, 0 }[move];
 	}
 
 	public static int[][] clone(int[][] array) {

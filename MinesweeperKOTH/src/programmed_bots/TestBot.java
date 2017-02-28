@@ -8,6 +8,6 @@ public class TestBot extends MineBot {
 	}
 
 	public int[] proceed(int[][] field) {
-		return new int[] { 2, (int) (Math.random() * 4) };
+		return new int[] { 2, (int) (Math.random() * 8) };
 	}
 }
