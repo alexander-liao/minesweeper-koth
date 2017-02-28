@@ -30,44 +30,68 @@ public class Game {
 		for (int iteration = 0; !bots.isEmpty(); iteration++) {
 			int[][] field = neighbors(board, bots);
 			for (int i = 0; i < botcount; i++) {
-				int type = bots.get(i).changeMines(clone(field));
-				(type == 0 ? movers : type == 1 ? defusers : bombers).add(bots.get(i));
+				try {
+					int type = bots.get(i).changeMines(clone(field));
+					(type == 0 ? movers : type == 1 ? defusers : bombers).add(bots.get(i));
+				} catch (Throwable t) {
+					System.out.println(bots.get(i).getClass().getSimpleName() + " killed itself...");
+					bots.remove(i);
+					botcount--;
+				}
 			}
 			for (MineBot bot : defusers) {
-				int[] move = bot.proceed(clone(field));
-				if (move[0] == 4) {
-					int dx = move[1] == 0 ? -1 : move[1] == 2 ? 1 : 0;
-					int dy = move[1] == 1 ? -1 : move[1] == 3 ? 1 : 0;
-					if (get(board, bot.getX() + dx, bot.getY() + dy) == 1) {
-						set(board, bot.getX() + dx, bot.getY() + dy, -1);
+				try {
+					int[] move = bot.proceed(clone(field));
+					if (move[0] == 4) {
+						int dx = move[1] == 0 ? -1 : move[1] == 2 ? 1 : 0;
+						int dy = move[1] == 1 ? -1 : move[1] == 3 ? 1 : 0;
+						if (get(board, bot.getX() + dx, bot.getY() + dy) == 1) {
+							set(board, bot.getX() + dx, bot.getY() + dy, -1);
+						}
 					}
+				} catch (Throwable t) {
+					System.out.println(bot.getClass().getSimpleName() + " killed itself...");
+					bots.remove(bot);
+					botcount--;
 				}
 			}
 			field = neighbors(board, bots);
 			for (MineBot bot : bombers) {
-				int[] move = bot.proceed(clone(field));
-				if (move[0] == 2 || move[0] == 3) {
-					int dx = move[1] == 0 ? -1 : move[1] == 2 ? 1 : 0;
-					int dy = move[1] == 1 ? -1 : move[1] == 3 ? 1 : 0;
-					if (move[0] == 2) {
-						if (get(board, bot.getX(), bot.getY()) == 0) {
-							set(board, bot.getX(), bot.getY(), 1);
-						}
-						move(bot, bot.getX() + dx, bot.getY() + dy);
-					} else {
-						if (get(board, bot.getX() + dx, bot.getY() + dy) == 0) {
-							set(board, bot.getX() + dx, bot.getY() + dy, 1);
+				try {
+					int[] move = bot.proceed(clone(field));
+					if (move[0] == 2 || move[0] == 3) {
+						int dx = move[1] == 0 ? -1 : move[1] == 2 ? 1 : 0;
+						int dy = move[1] == 1 ? -1 : move[1] == 3 ? 1 : 0;
+						if (move[0] == 2) {
+							if (get(board, bot.getX(), bot.getY()) == 0) {
+								set(board, bot.getX(), bot.getY(), 1);
+							}
+							move(bot, bot.getX() + dx, bot.getY() + dy);
+						} else {
+							if (get(board, bot.getX() + dx, bot.getY() + dy) == 0) {
+								set(board, bot.getX() + dx, bot.getY() + dy, 1);
+							}
 						}
 					}
+				} catch (Throwable t) {
+					System.out.println(bot.getClass().getSimpleName() + " killed itself...");
+					bots.remove(bot);
+					botcount--;
 				}
 			}
 			field = neighbors(board, bots);
 			for (MineBot bot : movers) {
-				int[] move = bot.proceed(clone(field));
-				if (move[0] == 1) {
-					int dx = move[1] == 0 ? -1 : move[1] == 2 ? 1 : 0;
-					int dy = move[1] == 1 ? -1 : move[1] == 3 ? 1 : 0;
-					move(bot, bot.getX() + dx, bot.getY() + dy);
+				try {
+					int[] move = bot.proceed(clone(field));
+					if (move[0] == 1) {
+						int dx = move[1] == 0 ? -1 : move[1] == 2 ? 1 : 0;
+						int dy = move[1] == 1 ? -1 : move[1] == 3 ? 1 : 0;
+						move(bot, bot.getX() + dx, bot.getY() + dy);
+					}
+				} catch (Throwable t) {
+					System.out.println(bot.getClass().getSimpleName() + " killed itself...");
+					bots.remove(bot);
+					botcount--;
 				}
 			}
 			List<MineBot> dead = new ArrayList<>();
