@@ -142,7 +142,7 @@ public class Game {
 			}
 		}
 		for (MineBot bot : bots) {
-			neighbors[bot.getX()][bot.getY()] += 8;
+			neighbors[bot.getX()][bot.getY()] += 16;
 		}
 		return neighbors;
 	}
